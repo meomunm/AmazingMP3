@@ -5,13 +5,19 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.RelativeLayout;
 
-import techkids.vn.zingmp3.adapters.SectionsPagerAdapter;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import techkids.vn.zingmp3.adapters.PagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
-    private SectionsPagerAdapter pagerAdapter;
+    private PagerAdapter pagerAdapter;
     private TabLayout tlTab;
     private ViewPager vpContent;
+
+    RelativeLayout rlMiniPlayerContent;
 
     private final String TAG = MainActivity.class.toString();
 
@@ -20,24 +26,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        rlMiniPlayerContent = (RelativeLayout) findViewById(R.id.rl_mini_player_content);
+        rlMiniPlayerContent.setVisibility(View.GONE);
 
-
-//        GetMusicTypes getMusicTypes = RetrofitFactory.getInstance().create(GetMusicTypes.class);
-//
-//        getMusicTypes.getMusicType().enqueue(new Callback<AllMusicTypesJSONModel>() {
-//            @Override
-//            public void onResponse(Call<AllMusicTypesJSONModel> call, Response<AllMusicTypesJSONModel> response) {
-//
-//                for (MusicTypeJSONModel musicTypeJSONModel: response.body().getSubgenres()){
-//                    Log.d(TAG, String.format("Id: %s, type: %s", musicTypeJSONModel.getId().toString(), musicTypeJSONModel.getTranslation_key().toString()));
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<AllMusicTypesJSONModel> call, Throwable t) {
-//                Toast.makeText(MainActivity.this, "No connection", Toast.LENGTH_SHORT).show();
-//            }
-//        });
         this.setUI();
     }
 
@@ -45,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.tb_toolbar);
         setSupportActionBar(toolbar);
 
-        pagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        pagerAdapter = new PagerAdapter(getSupportFragmentManager());
 
         vpContent = (ViewPager) findViewById(R.id.vp_content);
         vpContent.setAdapter(pagerAdapter);
@@ -72,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                tab.getIcon().setAlpha(100);
+                tab.getIcon().setAlpha(255);
             }
         });
     }
@@ -81,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         tab.getTabAt(0).setIcon(R.drawable.ic_library_music_black_24dp);
         tab.getTabAt(1).setIcon(R.drawable.ic_favorite_black_24dp);
         tab.getTabAt(2).setIcon(R.drawable.ic_file_download_black_24dp);
-        tab.getTabAt(0).getIcon().setAlpha(100);
+        tab.getTabAt(0).getIcon().setAlpha(255);
         tab.getTabAt(1).getIcon().setAlpha(100);
         tab.getTabAt(2).getIcon().setAlpha(100);
     }

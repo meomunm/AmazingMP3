@@ -2,7 +2,7 @@ package techkids.vn.zingmp3.networks;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import techkids.vn.zingmp3.json_models.AllMusicTypesJSONModel;
+import techkids.vn.zingmp3.networks.json_models.AllMusicTypesJSONModel;
 
 /**
  * Created by ADMIN on 7/15/2017.

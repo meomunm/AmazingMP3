@@ -6,4 +6,7 @@
     <color name="primary_text">#ffffff</color>
     <color name="secondary_text">#70ffffff</color>
     <color name="transparent">#00ffffff</color>
+    <color name="blurBackground">#713bb657</color>
+    <color name="blurBackgroundText">#85262121</color>
+
 </resources>

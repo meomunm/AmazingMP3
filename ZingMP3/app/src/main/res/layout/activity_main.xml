@@ -9,38 +9,6 @@
     tools:context="techkids.vn.zingmp3.MainActivity">
 
     <RelativeLayout
-        android:id="@+id/layout_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/tb_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"/>
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tl_tab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tb_toolbar"
-            android:background="@color/colorPrimary" />
-
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/vp_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:layout_below="@+id/tl_tab" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/rl_mini_player_content"
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -48,7 +16,7 @@
         android:layout_alignParentStart="true"
         android:elevation="10dp"
         android:background="@color/colorPrimaryDark"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/iv_image_mini_player"
@@ -78,11 +46,11 @@
         <TextView
             android:id="@+id/tv_name_mini_player"
             android:layout_width="228dp"
-            android:maxLines="1"
-            android:ellipsize="end"
             android:layout_height="25dp"
             android:layout_alignTop="@+id/iv_image_mini_player"
             android:layout_centerHorizontal="true"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:layout_marginTop="5dp"
             android:text="alll"
             android:textSize="20sp"
@@ -92,20 +60,54 @@
             android:id="@+id/tv_artist_mini_player"
             android:layout_width="228dp"
             android:layout_height="25dp"
+            android:text="all"
             android:maxLines="1"
             android:ellipsize="end"
-            android:text="all"
             android:layout_marginTop="5dp"
             android:textSize="18sp"
             android:layout_below="@+id/tv_name_mini_player"
             android:layout_alignStart="@+id/tv_name_mini_player" />
 
         <SeekBar
-            android:id="@+id/sk_mini_player"
-            android:thumbTint="@color/transparent"
+            android:id="@+id/sb_mini_player"
+            android:thumb="@null"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"/>
+            android:layout_alignParentTop="true"
+            android:layout_margin="5dp" />
 
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/rl_mini_player_content"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/tb_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"/>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tl_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tb_toolbar"
+            android:background="@color/colorPrimary" />
+
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_below="@+id/tl_tab" />
     </RelativeLayout>
 </RelativeLayout>

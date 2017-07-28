@@ -1,7 +1,9 @@
 package techkids.vn.zingmp3.managers;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -25,10 +27,10 @@ import techkids.vn.zingmp3.utils.FuzzyMatch;
  */
 
 public class MusicManager {
-    private final static String TAG = MusicManager.class.toString();
     private static HybridMediaPlayer hybridMediaPlayer;
+    private final static String TAG = MusicManager.class.toString();
 
-    public static void loadSearchSong(final TopSongModel topSongModel, final Context context) {
+    public static void loadSearchSong(final TopSongModel topSongModel, final Context context, final SeekBar sbMiniPlayer) {
         GetSearchSong getSearchSong = RetrofitFactory.getInstance().create(GetSearchSong.class);
         getSearchSong.getSearchSong("{\"q\":\" " + " " + topSongModel.getName() + "\", \"sort\":\"hot\", \"start\":\"0\", \"length\":\"10\"}").enqueue(new Callback<SearchMain>() {
             @Override
@@ -45,14 +47,16 @@ public class MusicManager {
                     }
                     //2. get max
                     for (int i = 0; i < ratioList.size(); i++) {
-                        if (Collections.max(ratioList) == ratioList.get(i)){
+                        if (Collections.max(ratioList) == ratioList.get(i)) {
                             String linkSource = response.body().getDocs().get(i).getSource().getLinkSource();
                             topSongModel.setLinkSourece(linkSource);
                             setupMusic(topSongModel, context);
+
+
+                            updateSongRealtime(topSongModel, sbMiniPlayer);
                         }
                     }
-                  //  Toast.makeText(context, topSongModel.getLinkSourece(), Toast.LENGTH_SHORT).show();
-
+                    //  Toast.makeText(context, topSongModel.getLinkSourece(), Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(context, "Not Found", Toast.LENGTH_SHORT).show();
                 }
@@ -65,15 +69,47 @@ public class MusicManager {
         });
     }
 
-    public static void setupMusic(TopSongModel topSongModel, Context context){
+    public static void setupMusic(TopSongModel topSongModel, Context context) {
+        if (hybridMediaPlayer != null) {
+            hybridMediaPlayer.release();
+            Log.d(TAG, "setupMusic: Đã xóa bài hát trước đó");
+        }
+
         hybridMediaPlayer = HybridMediaPlayer.getInstance(context);
         hybridMediaPlayer.setDataSource(topSongModel.getLinkSourece());
+
         hybridMediaPlayer.prepare();
         hybridMediaPlayer.setOnPreparedListener(new HybridMediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(HybridMediaPlayer hybridMediaPlayer) {
                 hybridMediaPlayer.play();
+                Log.d(TAG, "onPrepared: Đang phát nhạc");
             }
         });
+
+    }
+
+    public static void playPause() {
+        if (hybridMediaPlayer.isPlaying()) {
+            hybridMediaPlayer.pause();
+            Log.d(TAG, "playPause: Đã pause nhạc");
+        } else {
+            hybridMediaPlayer.play();
+            Log.d(TAG, "playPause: Play lại nhạc");
+        }
+    }
+
+    public static void updateSongRealtime(TopSongModel topSongModel, final SeekBar sbMiniPlayer) {
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                sbMiniPlayer.setMax(hybridMediaPlayer.getDuration());
+                sbMiniPlayer.setProgress(hybridMediaPlayer.getCurrentPosition());
+
+                handler.postDelayed(this, 100);
+            }
+        };
+        runnable.run();
     }
 }

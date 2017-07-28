@@ -5,20 +5,22 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import techkids.vn.zingmp3.adapters.PagerAdapter;
+import techkids.vn.zingmp3.managers.MusicManager;
 
 public class MainActivity extends AppCompatActivity {
     private PagerAdapter pagerAdapter;
     private TabLayout tlTab;
     private ViewPager vpContent;
+
+    private RelativeLayout rlMiniPlayerContent;
     private SeekBar skMiniPlayer;
-    RelativeLayout rlMiniPlayerContent;
 
     private final String TAG = MainActivity.class.toString();
 
@@ -29,11 +31,12 @@ public class MainActivity extends AppCompatActivity {
 
         rlMiniPlayerContent = (RelativeLayout) findViewById(R.id.rl_mini_player_content);
         rlMiniPlayerContent.setVisibility(View.GONE);
-        skMiniPlayer = (SeekBar) findViewById(R.id.sk_mini_player);
-        skMiniPlayer.setPadding(0,0,0,0);  //set padding mac dinh cho seekbar
+        skMiniPlayer = (SeekBar) findViewById(R.id.sb_mini_player);
+        skMiniPlayer.setPadding(0, 0, 0, 0);
 
         this.setUI();
     }
+
 
     private void setUI() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.tb_toolbar);
@@ -71,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setTabLayout(TabLayout tab){
+    private void setTabLayout(TabLayout tab) {
         tab.getTabAt(0).setIcon(R.drawable.ic_library_music_black_24dp);
         tab.getTabAt(1).setIcon(R.drawable.ic_favorite_black_24dp);
         tab.getTabAt(2).setIcon(R.drawable.ic_file_download_black_24dp);
@@ -79,5 +82,6 @@ public class MainActivity extends AppCompatActivity {
         tab.getTabAt(1).getIcon().setAlpha(100);
         tab.getTabAt(2).getIcon().setAlpha(100);
     }
+
 
 }

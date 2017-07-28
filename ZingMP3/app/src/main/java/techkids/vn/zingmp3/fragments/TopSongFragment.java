@@ -14,6 +14,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +37,9 @@ import techkids.vn.zingmp3.adapters.TopSongAdapter;
 import techkids.vn.zingmp3.databases.MusicTypeModel;
 import techkids.vn.zingmp3.databases.TopSongModel;
 import techkids.vn.zingmp3.events.OnClickMusicType;
+import techkids.vn.zingmp3.events.OnClickTopSong;
 import techkids.vn.zingmp3.managers.MusicManager;
+import techkids.vn.zingmp3.managers.ScreenManager;
 import techkids.vn.zingmp3.networks.GetTopSong;
 import techkids.vn.zingmp3.networks.RetrofitFactory;
 import techkids.vn.zingmp3.networks.json_topsong_models.Entry;
@@ -148,15 +151,16 @@ public class TopSongFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         TopSongModel topSongModel = (TopSongModel) v.getTag();
-        MusicManager.loadSearchSong(topSongModel, getContext());
-
+        //// TODO: 7/28/2017 ????? dùng như thế nào? tại sao nó lại lấy đúng models mình cần
+        SeekBar sbMiniPlayer = (SeekBar) getActivity().findViewById(R.id.sb_mini_player);
+        MusicManager.loadSearchSong(topSongModel, getContext(), sbMiniPlayer);
 
         this.setDataForMiniPlayer(topSongModel);
 
     }
 
     private void setDataForMiniPlayer(final TopSongModel topSongModel) {
-        RelativeLayout rlMiniPlayerContent = (RelativeLayout) getActivity().findViewById(R.id.rl_mini_player_content);
+        final RelativeLayout rlMiniPlayerContent = (RelativeLayout) getActivity().findViewById(R.id.rl_mini_player_content);
         rlMiniPlayerContent.setVisibility(View.VISIBLE);
 
         final ImageView ivImageMiniPlayer = (ImageView) getActivity().findViewById(R.id.iv_image_mini_player);
@@ -168,24 +172,30 @@ public class TopSongFragment extends Fragment implements View.OnClickListener {
         tvArtistMiniPlayer.setText(topSongModel.getArtist());
         Picasso.with(getContext()).load(topSongModel.getImage()).transform(new CropCircleTransformation()).into(ivImageMiniPlayer);
 
-        //Rotate image with rotate.xml in res/anim
-        ivPlayMiniPlayer.setOnClickListener(new View.OnClickListener() {
+        //Next fragment when tap on mini player with Data(EventBus)
+        rlMiniPlayerContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isRotating) {
-                    if (getContext() != null) {
-                        rotation = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
-                        rotation.setFillAfter(true);
-                        ivImageMiniPlayer.startAnimation(rotation);
-                        isRotating = true;
-                    }
-                }else {
-                    ivImageMiniPlayer.clearAnimation();
-                    isRotating = false;
-                }
+                rlMiniPlayerContent.setVisibility(View.GONE);
+                ScreenManager.openFragment(getActivity().getSupportFragmentManager(), new MiniPlayerFragment(), R.id.layout_container);
+
+                EventBus.getDefault().postSticky(new OnClickTopSong(topSongModel));
             }
         });
 
+        //TODO: Rotate image with rotate.xml in res/anim
+        ivPlayMiniPlayer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isRotating = !isRotating;
+                if (isRotating) {
+                    rotation = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
+                    rotation.setFillAfter(true);
+                    ivImageMiniPlayer.startAnimation(rotation);
+                    isRotating = true;
+                } else ivImageMiniPlayer.clearAnimation();
+                MusicManager.playPause();
+            }
+        });
     }
-
 }

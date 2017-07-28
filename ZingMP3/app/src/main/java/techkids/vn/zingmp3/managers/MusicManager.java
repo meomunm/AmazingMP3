@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import hybridmediaplayer.HybridMediaPlayer;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,6 +26,7 @@ import techkids.vn.zingmp3.utils.FuzzyMatch;
 
 public class MusicManager {
     private final static String TAG = MusicManager.class.toString();
+    private static HybridMediaPlayer hybridMediaPlayer;
 
     public static void loadSearchSong(final TopSongModel topSongModel, final Context context) {
         GetSearchSong getSearchSong = RetrofitFactory.getInstance().create(GetSearchSong.class);
@@ -46,9 +48,11 @@ public class MusicManager {
                         if (Collections.max(ratioList) == ratioList.get(i)){
                             String linkSource = response.body().getDocs().get(i).getSource().getLinkSource();
                             topSongModel.setLinkSourece(linkSource);
+                            setupMusic(topSongModel, context);
                         }
                     }
-                    Toast.makeText(context, topSongModel.getLinkSourece(), Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(context, topSongModel.getLinkSourece(), Toast.LENGTH_SHORT).show();
+
                 } else {
                     Toast.makeText(context, "Not Found", Toast.LENGTH_SHORT).show();
                 }
@@ -57,6 +61,18 @@ public class MusicManager {
             @Override
             public void onFailure(Call<SearchMain> call, Throwable t) {
                 Toast.makeText(context, "No connect access INTERNET ", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public static void setupMusic(TopSongModel topSongModel, Context context){
+        hybridMediaPlayer = HybridMediaPlayer.getInstance(context);
+        hybridMediaPlayer.setDataSource(topSongModel.getLinkSourece());
+        hybridMediaPlayer.prepare();
+        hybridMediaPlayer.setOnPreparedListener(new HybridMediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(HybridMediaPlayer hybridMediaPlayer) {
+                hybridMediaPlayer.play();
             }
         });
     }

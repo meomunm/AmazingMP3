@@ -36,6 +36,7 @@ import techkids.vn.zingmp3.adapters.TopSongAdapter;
 import techkids.vn.zingmp3.databases.MusicTypeModel;
 import techkids.vn.zingmp3.databases.TopSongModel;
 import techkids.vn.zingmp3.events.OnClickMusicType;
+import techkids.vn.zingmp3.managers.MusicManager;
 import techkids.vn.zingmp3.networks.GetTopSong;
 import techkids.vn.zingmp3.networks.RetrofitFactory;
 import techkids.vn.zingmp3.networks.json_topsong_models.Entry;
@@ -147,7 +148,8 @@ public class TopSongFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         TopSongModel topSongModel = (TopSongModel) v.getTag();
-        //MusicManager.loadSearchSong(topSongModel, getContext());
+        MusicManager.loadSearchSong(topSongModel, getContext());
+
 
         this.setDataForMiniPlayer(topSongModel);
 

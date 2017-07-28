@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private PagerAdapter pagerAdapter;
     private TabLayout tlTab;
     private ViewPager vpContent;
-
+    private SeekBar skMiniPlayer;
     RelativeLayout rlMiniPlayerContent;
 
     private final String TAG = MainActivity.class.toString();
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
         rlMiniPlayerContent = (RelativeLayout) findViewById(R.id.rl_mini_player_content);
         rlMiniPlayerContent.setVisibility(View.GONE);
+        skMiniPlayer = (SeekBar) findViewById(R.id.sk_mini_player);
+        skMiniPlayer.setPadding(0,0,0,0);  //set padding mac dinh cho seekbar
 
         this.setUI();
     }

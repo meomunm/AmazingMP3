@@ -63,6 +63,8 @@ public class MiniPlayerFragment extends Fragment {
                     getFragmentManager().popBackStack();
                 } else
                     Toast.makeText(getContext(), "Has an bug in MiniPlayerFragment.class", Toast.LENGTH_SHORT).show();
+                getActivity().findViewById(R.id.rl_mini_player_content).setVisibility(View.VISIBLE);
+
             }
         });
         return view;

@@ -44,6 +44,7 @@ import techkids.vn.zingmp3.networks.GetTopSong;
 import techkids.vn.zingmp3.networks.RetrofitFactory;
 import techkids.vn.zingmp3.networks.json_topsong_models.Entry;
 import techkids.vn.zingmp3.networks.json_topsong_models.TopSongJsonModel;
+import techkids.vn.zingmp3.services.PlayMusicNotification;
 
 /**
  * Created by ADMIN on 7/21/2017.
@@ -153,7 +154,9 @@ public class TopSongFragment extends Fragment implements View.OnClickListener {
         TopSongModel topSongModel = (TopSongModel) v.getTag();
         //// TODO: 7/28/2017 ????? dùng như thế nào? tại sao nó lại lấy đúng models mình cần
         SeekBar sbMiniPlayer = (SeekBar) getActivity().findViewById(R.id.sb_mini_player);
-        MusicManager.loadSearchSong(topSongModel, getContext(), sbMiniPlayer);
+       // MusicManager.loadSearchSong(topSongModel, getContext(), sbMiniPlayer, (ImageView) getActivity().findViewById(R.id.iv_play_mini_player));
+
+        PlayMusicNotification.setupNotification(getContext(), topSongModel);
 
         this.setDataForMiniPlayer(topSongModel);
 
@@ -187,13 +190,13 @@ public class TopSongFragment extends Fragment implements View.OnClickListener {
         ivPlayMiniPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isRotating = !isRotating;
-                if (isRotating) {
-                    rotation = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
-                    rotation.setFillAfter(true);
-                    ivImageMiniPlayer.startAnimation(rotation);
-                    isRotating = true;
-                } else ivImageMiniPlayer.clearAnimation();
+//                isRotating = !isRotating;
+//                if (isRotating) {
+//                    rotation = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
+//                    rotation.setFillAfter(true);
+//                    ivImageMiniPlayer.startAnimation(rotation);
+//                    isRotating = true;
+//                } else ivImageMiniPlayer.clearAnimation();
                 MusicManager.playPause();
             }
         });

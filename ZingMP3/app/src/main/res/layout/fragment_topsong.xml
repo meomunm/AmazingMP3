@@ -19,6 +19,7 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
+            android:clickable="true"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
